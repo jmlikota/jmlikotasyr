@@ -11,10 +11,10 @@ d_date as (
     select * from {{ ref('dim_date') }}
 ),
 d_product as (
-    select * from {{ ref('dim_products') }}
+    select * from {{ ref('dim_product') }}
 )
 select
-     d_customer.*,
+    d_customer.*,
     d_employee.*,
     d_date.*,
     d_product.*,

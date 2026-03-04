@@ -23,7 +23,7 @@ stg_products as (
     select
         productkey,
         productid
-    from {{ ref('dim_products') }}
+    from {{ ref('dim_product') }}
 )
 
 select
