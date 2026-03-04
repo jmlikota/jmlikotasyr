@@ -7,18 +7,21 @@ models:
       - name: orderid
         description: "Source key used for drill through"
         tests:
-          - unique
           - not_null
       - name: customerkey
         description: "Dimension FK for dim_customer"
+        tests:
+          - not_null
       - name: employeekey
         description: "Dimension FK for dim_employee"
+        tests:
+          - not_null
       - name: orderdatekey
         description: "Dimension FK for dim_date"
       - name: productkey
         description: "Dimension FK for dim_product"
         tests:
-          - unique
+          - not_null
       - name: quantity
         description: "The quantity of the product on the order. Additive"
         tests:
