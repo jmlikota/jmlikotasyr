@@ -1,0 +1,3 @@
+models:
+  - name: obt_fact_sales
+    description: The sales fact table combined with all of its dimensions into one wide table. Transaction fact table with one row per line item.
