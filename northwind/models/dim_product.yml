@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dim_product
+    description: "Product dimension. Includes product info, supplier FK, and category details."
+    columns:
+      - name: productkey
+        description: "Surrogate key for the product dimension"
+        tests:
+          - unique
+          - not_null
+      - name: productid
+        description: "Primary key from the source system (business key)"
+        tests:
+          - unique
+          - not_null
+      - name: productname
+        description: "The name of the product"
+      - name: supplierkey
+        description: "Foreign key to dim_supplier"
+      - name: categoryname
+        description: "Name of the product category"
+        tests:
+          - not_null
+      - name: categorydescription
+        description: "Description of the product category"
+        tests:
+          - not_null
