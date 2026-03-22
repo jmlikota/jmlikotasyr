@@ -2,9 +2,9 @@ with
 stg_fm_orders as (
     select
         order_id,
-        'Fudgemart' as division,
+        'FudgeMart' as division,
         {{ dbt_utils.generate_surrogate_key(['order_id', 'division']) }} as orderkey,
-        customer_id as customerkey,
+        cast(customer_id as varchar) as customer_id,
         replace(to_date(order_date)::varchar, '-', '')::int as orderdatekey,
         replace(to_date(shipped_date)::varchar, '-', '')::int as shippeddatekey,
         null as returneddatekey,
@@ -15,9 +15,9 @@ stg_fm_orders as (
 stg_ff_orders as (
     select
         at_id AS order_id,
-        'Fudgeflix' as division,
+        'FudgeFlix' as division,
         {{ dbt_utils.generate_surrogate_key(['at_id', 'division']) }} as orderkey,
-        at_account_id as customerkey,
+        cast(at_account_id as varchar) as customer_id,
         replace(to_date(at_queue_date)::varchar, '-', '')::int as orderdatekey,
         replace(to_date(at_shipped_date)::varchar, '-', '')::int as shippeddatekey,
         replace(to_date(at_returned_date)::varchar, '-', '')::int as returneddatekey,

@@ -37,3 +37,4 @@ sources:
       - name: ff_plans
       - name: ff_zipcodes
       - name: ff_account_billing
+      - name: ff_title_genres
