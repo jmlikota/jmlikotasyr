@@ -1,6 +1,6 @@
 select
     fe.source_order_id as fulfillment_id,
-    fe.source_customer_id as customer_key,  -- useing source customer_id because it's varchar
+    fe.source_customer_id as customer_key,  
     fe.source_item_id as item_key,
     fe.source_order_id as order_key,
     fe.order_date,
