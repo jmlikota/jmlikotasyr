@@ -5,10 +5,10 @@ with
 stg_customers as (
 --Stage FudgeFlix Accounts with ZIP lookup
     select
-        a.account_id as source_customer_id,
-        'FudgeFlix' as source_system,
-        a.account_firstname as contact_first_name,
-        a.account_lastname as contact_last_name,
+        cast(a.account_id as varchar) as customer_id,
+        'FudgeFlix' as division,
+        a.account_firstname as customer_first_name,
+        a.account_lastname as customer_last_name,
         a.account_address as customer_address,
         z.zip_city as customer_city,       -- from ff_zipcodes
         z.zip_state as customer_state,     -- from ff_zipcodes
@@ -23,10 +23,10 @@ stg_customers as (
 
     --Stage FudgeMart Customers
     select
-        c.customer_id as source_customer_id,
-        'FudgeMart' as source_system,
-        c.customer_firstname as contact_first_name,
-        c.customer_lastname as contact_last_name,
+        cast(c.customer_id as varchar) as customer_id,
+        'FudgeMart' as division,
+        c.customer_firstname as customer_first_name,
+        c.customer_lastname as customer_last_name,
         c.customer_address as customer_address,
         c.customer_city as customer_city,
         c.customer_state as customer_state,   -- standardize state column
@@ -37,6 +37,15 @@ stg_customers as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['source_customer_id','source_system']) }} as customerkey,
-    *
+    {{ dbt_utils.generate_surrogate_key(['customer_id','division']) }} as customerkey,
+    customer_id,  
+    division,
+    customer_first_name,
+    customer_last_name,
+    customer_address,
+    customer_city,
+    customer_state,
+    customer_postal_code,
+    customer_phone,
+    customer_email
 from stg_customers

@@ -1,24 +1,24 @@
-with f as (
-    select
-        source_order_id as fulfillment_id,
-        source_customer_id as customer_key,
-        source_item_id as item_key,
-        source_order_id as order_key,
-
-        -- just pass through the raw dates for now
-        order_date,
-        shipped_date,
-        returned_date,
-
-        quantity,
-        unit_price,
-        quantity * unit_price as extended_price,
-        fulfillment_channel,
-        source_system
-    from {{ ref('stg_fulfillment_events') }}
-    qualify row_number() over (partition by source_system order by order_date) <= 5
-)
-
-
-select * from f
-order by source_system, fulfillment_id
+select
+    fe.source_order_id as fulfillment_id,
+    fe.source_customer_id as customer_key,  -- useing source customer_id because it's varchar
+    fe.source_item_id as item_key,
+    fe.source_order_id as order_key,
+    fe.order_date,
+    fe.shipped_date,
+    fe.returned_date,
+    fe.quantity,
+    round(fe.unit_price, 2) as unit_price,
+    round(fe.quantity * fe.unit_price, 2) as extended_price,
+    fe.fulfillment_channel,
+    fe.division
+from {{ ref('stg_fulfillment_events') }} fe
+join {{ ref('dim_customers') }} c
+    on c.customer_id = fe.source_customer_id
+   and c.division = fe.division
+join {{ ref('dim_orders') }} o
+    on o.order_id = fe.source_order_id
+   and o.customer_id = fe.source_customer_id
+   and o.division = fe.division
+join {{ ref('dim_products') }} p
+    on p.product_id = fe.source_item_id
+   and p.division = fe.division
