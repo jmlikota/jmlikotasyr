@@ -22,12 +22,12 @@ ff as (
         cast(at.account_id as varchar) as source_customer_id,
         cast(at.title_id as varchar) as source_item_id,
         at.order_date,
-        at.shipped_date,
+        at.order_date as shipped_date,
         at.returned_date,
         1 as quantity,
         cast(pl.plan_price as number(10,2)) as unit_price,
         case
-            when at.shipped_date is not null then 'Rental'
+            when at.order_date is not null then 'Rental'
             when t.title_instant_available = true then 'Streaming'
             else 'Unknown'
         end as fulfillment_channel
